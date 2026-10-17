@@ -5,14 +5,36 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class StatisticsUtilsTest {
-
     @Test
     fun getActiveAndCompletedStats_two_return50f50f() {
-        // GIVEN - One completed task and one active task
+        // Given: one active and one completed task.
+        val tasks = listOf(Task("Completed", "description", true, "1"), Task("Active", "description", false, "2"))
+        // When
+        val result = getActiveAndCompletedStats(tasks)
+        // Then
+        assertEquals(50f, result.activeTasksPercent)
+        assertEquals(50f, result.completedTasksPercent)
+    }
 
-        // WHEN - Compute the statistics
+    @Test
+    fun getActiveAndCompletedStats_zero_return0f0f() {
+        // Given
+        val tasks = emptyList<Task>()
+        // When
+        val result = getActiveAndCompletedStats(tasks)
+        // Then
+        assertEquals(0f, result.activeTasksPercent)
+        assertEquals(0f, result.completedTasksPercent)
+    }
 
-        // THEN - Both percentages are 50%
-
+    @Test
+    fun getActiveAndCompletedStats_twoCompleted_return0f100f() {
+        // Given
+        val tasks = listOf(Task("First", "description", true, "1"), Task("Second", "description", true, "2"))
+        // When
+        val result = getActiveAndCompletedStats(tasks)
+        // Then
+        assertEquals(0f, result.activeTasksPercent)
+        assertEquals(100f, result.completedTasksPercent)
     }
 }
